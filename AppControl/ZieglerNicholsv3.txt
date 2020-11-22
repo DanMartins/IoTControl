@@ -1,0 +1,36 @@
+################################################################
+#% AppControl - IoTControl
+#%
+#%       Application - Interface.
+#%       DanMartins
+#%       Advisor - Prof. Dr. Alexandre Brincalepe Campo
+#%       Implemented by Danilo Martins
+#%       IoTControl reasearch project 
+#%       São Paulo, 2017. 
+#%
+#%################################################################
+Ziegler - Nichols
+Método Resposta ao Degrau:
+T = 1.0s
+L = 0.1s
+Kc = 630/100 = 6,3
+     Kp      Ki     Kd
+P    T/Kc*L     oo      0
+PI  0.4T/Kc*L   L/0.3   0
+PID 1.2T/Kc*L   2L     0.5L
+
+PID   1.9      0.2      0.05
+
+
+
+Método Estabilidade Marginal:
+Kcr=4
+Pcr=1,4s
+
+PID Type	Kp	Ti=Kp/Ki	Td=Kd/Kp
+P	0.5 Kcr	8	0
+PI	0.45 Kcr	Pcr/(1.2)	0
+PID	0.6 Kcr	Pcr/2	Pcr/8
+
+PID	2.4	0.7	0,175
+
