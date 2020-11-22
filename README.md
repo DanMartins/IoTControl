@@ -7,3 +7,5 @@ Preliminary results was published, there is a long road on the research and expe
 
 Thank you for your time and attention, please check out the IoTControl YouTube channel:
 https://www.youtube.com/channel/UCRJF9ALztqDIZ913XhoeNug
+
+[![DOI](https://zenodo.org/badge/315060510.svg)](https://zenodo.org/badge/latestdoi/315060510)
