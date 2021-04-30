@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ######################################################
-## {IoTControl - AppControl - IoTPI}                ##
+## {IoTControl - AppControl - IoT_OpenLoop}         ##
 ######################################################
 ## { DanMartins/IoTControl is licensed under the    ##
 ##   GNU General Public License v3.0}               ##
@@ -20,7 +20,6 @@ import time
 from datetime import datetime
 import threading
 import os
-from AppControl import PI
 from encoder import Encoder
 import sys
 from ctypes import *
@@ -65,17 +64,11 @@ tempociclo = 0.1
 velc = 0.0
 velocfilter = 0.0
 pwm = 0.0
-pi = 0.0
 KGain = 0.0
-fatorKp = 1.0
-fatorKi = 0.0
-fatorKd = 0.0
+fatorK = 0.0
 motorzm = 0.0
 pwmzm = 0.0
 grafpts = 0
-fatora = 0.0004
-fatorb = - 0.1254
-fatorc = 32.343
 #set variable of previous time as the initial time
 Tant = time.time()
 tempoLoop = tempoGrava = tempoProcesso = masterClock = Tant
@@ -130,7 +123,6 @@ def calcFeedback(tau, Tnow):
 def printSpeed():
   print (' ')
   print ('PWM: %s' %pwm)
-  print ('PI: %s' %pi)
   print ('Velocidade: %s' %feedBack)
   print ('Controle: %s' %dControl)
 
@@ -155,22 +147,15 @@ def saidaPWM(w1, w2):
 def main(): 
   global feedBack
   global dControl
-  global controle
-  global pi
-  global fatorKp
-  global fatorKi
-  global fatorKd
   global pulsosvelcalc
   global tempoStorage
   global tempociclo
   global velocfilter
   global KGain
+  global fatorK
   global pwm
   global motorzm
   global pwmzm
-  global fatora
-  global fatorb
-  global fatorc
   global tempoProcesso
   global tempoGrava
   global tempoLoop
@@ -185,12 +170,8 @@ def main():
 
   #initialize variables
   resret = 0.0
-
   xstamp = datetime.now() #(2016,9,27,16,00,00)
-
   pwm = 0.0
-  pi = 0.0
-  
   #Load configuration from database only at init
   csr.execute("SELECT pulsosvelcalc, tempovelcalc, tempociclo, grafpts, intvelfil, pwmfreq, motorzm, pwmzm FROM configura")
   resstr = csr.fetchone()
@@ -210,9 +191,6 @@ def main():
   #set control signal output frequency
   p.ChangeFrequency(pwmfreq)
 
-  #controller class init
-  controle=PI(fatorKp,fatorKi)
-
   #write to file system temp - IoTControl process started.
   iniciado.close()
 
@@ -225,7 +203,6 @@ def main():
     while True:
       #master clock
       masterClock = time.time()
-
       if (tempociclo <= (masterClock - tempoLoop)):
         tempoLoop = masterClock
         #feedback update speed calc - pulses encoder
@@ -234,11 +211,16 @@ def main():
         if debug2console:
           printSpeed()
 
-        #control
-        controle.setPoint(dControl)
-        #control inputs Feedback, Ts
-        pwm = pi = controle.update(feedBack, tempociclo)
-
+        #control - Open Loop
+        pwm = dControl * fatorK
+    
+        #Output positive saturation
+        if (pwm >= 100.0):  
+          pwm = 100.0
+        #Output negative saturation
+        if (pwm <= -100.0):
+          pwm = -100.0
+    
         #positive output
         if pwm >= 0.0:
           saidaPWM(pwm, 1)
@@ -255,29 +237,15 @@ def main():
         #Update data Storage
         if (tempoStorage <= (masterClock - tempoGrava)):
           tempoGrava = masterClock
-          csr.execute("SELECT ajuste, valorK, valorKi, valorKd, fatora, fatorb, fatorc FROM controle")
+          csr.execute("SELECT ajuste, valorK FROM controle")
           resstr = csr.fetchone()
           resret = float(resstr[0])
           #ajusta dControl
           dControl = resret
-
-          # lendo valores do banco
-          fatorKp = resstr[1]
-          fatorKi = resstr[2]
-          fatorKd = resstr[3]
-          fatora = resstr[4]
-          fatorb = resstr[5]
-          fatorc = resstr[6]
-
-          # input Kp Ki e Kd
-          controle.setKp(fatorKp)
-          controle.setKi(fatorKi)
-          # input Windup saturation, deadbands and Filter N 3_20.
-          controle.setWindup(100.0, motorzm, pwmzm, 3.0)
-
+          fatorK = resstr[1]
           #INSERT
           xstamp = datetime.fromtimestamp(masterClock) #(2016,9,27,16,00,00)
-          csr.execute("INSERT INTO dados (ajuste, velocidade, erro, Kp, Ki, Kmotor, tempo) VALUES(?,?,?,?,?,?,?)",(dControl, feedBack, pwm,fatorKp,fatorKi, KGain,xstamp))
+          csr.execute("INSERT INTO dados (ajuste, velocidade, erro, Kmotor, tempo) VALUES(?,?,?,?,?)",(dControl, feedBack, pwm, KGain, xstamp))
           conn.commit()
 
       #measure the time in the loop

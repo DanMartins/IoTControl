@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ######################################################
-## {IoTControl - AppControl - IoTPI}                ##
+## {IoTControl - AppControl - IoTPID}               ##
 ######################################################
 ## { DanMartins/IoTControl is licensed under the    ##
 ##   GNU General Public License v3.0}               ##
@@ -20,7 +20,7 @@ import time
 from datetime import datetime
 import threading
 import os
-from AppControl import PI
+from AppControl import PID
 from encoder import Encoder
 import sys
 from ctypes import *
@@ -65,7 +65,7 @@ tempociclo = 0.1
 velc = 0.0
 velocfilter = 0.0
 pwm = 0.0
-pi = 0.0
+pid = 0.0
 KGain = 0.0
 fatorKp = 1.0
 fatorKi = 0.0
@@ -74,7 +74,7 @@ motorzm = 0.0
 pwmzm = 0.0
 grafpts = 0
 fatora = 0.0004
-fatorb = - 0.1254
+fatorb = -0.1254
 fatorc = 32.343
 #set variable of previous time as the initial time
 Tant = time.time()
@@ -130,7 +130,7 @@ def calcFeedback(tau, Tnow):
 def printSpeed():
   print (' ')
   print ('PWM: %s' %pwm)
-  print ('PI: %s' %pi)
+  print ('PID: %s' %pid)
   print ('Velocidade: %s' %feedBack)
   print ('Controle: %s' %dControl)
 
@@ -156,7 +156,7 @@ def main():
   global feedBack
   global dControl
   global controle
-  global pi
+  global pid
   global fatorKp
   global fatorKi
   global fatorKd
@@ -185,11 +185,9 @@ def main():
 
   #initialize variables
   resret = 0.0
-
   xstamp = datetime.now() #(2016,9,27,16,00,00)
-
   pwm = 0.0
-  pi = 0.0
+  pid = 0.0
   
   #Load configuration from database only at init
   csr.execute("SELECT pulsosvelcalc, tempovelcalc, tempociclo, grafpts, intvelfil, pwmfreq, motorzm, pwmzm FROM configura")
@@ -211,7 +209,7 @@ def main():
   p.ChangeFrequency(pwmfreq)
 
   #controller class init
-  controle=PI(fatorKp,fatorKi)
+  controle=PID(fatorKp,fatorKi,fatorKd)
 
   #write to file system temp - IoTControl process started.
   iniciado.close()
@@ -237,7 +235,7 @@ def main():
         #control
         controle.setPoint(dControl)
         #control inputs Feedback, Ts
-        pwm = pi = controle.update(feedBack, tempociclo)
+        pwm = pid = controle.update(feedBack, tempociclo)
 
         #positive output
         if pwm >= 0.0:
@@ -270,14 +268,13 @@ def main():
           fatorc = resstr[6]
 
           # input Kp Ki e Kd
-          controle.setKp(fatorKp)
-          controle.setKi(fatorKi)
+          controle.setKpKiKd(fatorKp,fatorKi,fatorKd)
           # input Windup saturation, deadbands and Filter N 3_20.
           controle.setWindup(100.0, motorzm, pwmzm, 3.0)
 
           #INSERT
           xstamp = datetime.fromtimestamp(masterClock) #(2016,9,27,16,00,00)
-          csr.execute("INSERT INTO dados (ajuste, velocidade, erro, Kp, Ki, Kmotor, tempo) VALUES(?,?,?,?,?,?,?)",(dControl, feedBack, pwm,fatorKp,fatorKi, KGain,xstamp))
+          csr.execute("INSERT INTO dados (ajuste, velocidade, erro, Kp, Ki, Kd, Kmotor, tempo) VALUES(?,?,?,?,?,?,?,?)",(dControl, feedBack, pwm,fatorKp,fatorKi,fatorKd, KGain,xstamp))
           conn.commit()
 
       #measure the time in the loop
