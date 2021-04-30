@@ -13,7 +13,7 @@
 ## Maintainer: {github.com/DanMartins/IoTControl}   ##
 ## Email: {github.com/DanMartins}                   ##
 ## Status: {Development}                            ##
-/*%################################################################
+/*%################################################################ 
 -->
 <?php
 
