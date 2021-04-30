@@ -1,18 +1,25 @@
+<!-- %################################################################
+######################################################
+## {IoTControl - NetControl - Interface}            ##
+######################################################
+## { DanMartins/IoTControl is licensed under the    ##
+##   GNU General Public License v3.0}               ##
+######################################################
+## Author: {DanMartins}                             ##
+## Copyright: Copyright {2021}, {IoTControl}        ##
+## Credits: [{https://domartins.wixsite.com/data}]  ##
+## License: {GNU General Public License v3.0}       ##
+## Version: {2021}.{04}.{22}                        ##
+## Maintainer: {github.com/DanMartins/IoTControl}   ##
+## Email: {github.com/DanMartins}                   ##
+## Status: {Development}                            ##
 /*%################################################################
-/*% NetControl - IoTControl
-/*%
-/*%       Network - Interface.
-/*%       DanMartins
-/*%       IoTControl reasearch project
-/*%       São Paulo, 2017.
-/*%
-/*%################################################################
-*/
+-->
 <?php
    print("<!DOCTYPE html>\n");
    print("<html>\n");
    print("<head>\n");
-   print("\t<title>IoTControl Configuração de Controle</title>\n");
+   print("\t<title>IoTControl</title>\n");
    print("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
 
    $osrunning = php_uname();
@@ -26,8 +33,6 @@
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
-
-   print("\t<h4>IoTControl - Configurações FUZZY</h4>\n");
 
 
    $ses = Initialize();
@@ -113,95 +118,205 @@
 <html>
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <table>
+    <style>
+    /* CSS property for content section */
+	.columnA, .columnB, .columnC, .columnD, .columnE, .columnF, .columnG {
+	    float: left;
+	    width: 12%;
+	    padding: 1%;
+	    text-align:justify;
+    }
+    </style>
+    <style>
+    /* CSS property for content section */
+	.colA, .colB, .colC {
+	    float: left;
+	    width: 33.3%;
+	    height: 12vh;
+	    padding: 0%;
+	    text-align:center;
+    }
+    </style>
+    <style>
+    /* CSS property for content section */
+	.clA, .clB {
+	    float: left;
+	    width: 50%;
+	    height: 12vh;
+	    padding: 0%;
+	    text-align:center;
+    }
+    </style>
+        <h1>Fuzzification</h1>
+        <!-- Content section of website layout -->
+
+	<table>
 	<form method="post" action="fuexe.php">
-	  Fuzzy N3:
-	  <input type="text" name="fuzN3" value="<?php echo $result2['fuzN3'] ?>">
 
-	  Fuzzy N2:
-	  <input type="text" name="fuzN2" value="<?php echo $result2['fuzN2'] ?>">
+            <div class = "columnA">
+            <h2>N3</h2>
+	            <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzN3" value="<?php echo $result2['fuzN3'] ?>">
+                <p></p>
+            </div>
 
-	  Fuzzy N1:
-	  <input type="text" name="fuzN1" value="<?php echo $result2['fuzN1'] ?>">
+            <div class = "columnB">
+            <h2>N2</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzN2" value="<?php echo $result2['fuzN2'] ?>">
+                <p></p>
+            </div>
 
-	  Fuzzy Z:
-	  <input type="text" name="fuzZ" value="<?php echo $result2['fuzZ'] ?>">
-      <br>
-	  Fuzzy P1:
-	  <input type="text" name="fuzP1" value="<?php echo $result2['fuzP1'] ?>">
+            <div class = "columnC">
+            <h2>N1</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzN1" value="<?php echo $result2['fuzN1'] ?>">
+                <p></p>
+            </div>
 
-	  Fuzzy P2:
-	  <input type="text" name="fuzP2" value="<?php echo $result2['fuzP2'] ?>">
+            <div class = "columnD">
+            <h2>Z</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzZ" value="<?php echo $result2['fuzZ'] ?>">
+                <p></p>
+            </div>
 
-	  Fuzzy P3:
-	  <input type="text" name="fuzP3" value="<?php echo $result2['fuzP3'] ?>">
-	  <br><br>
+            <div class = "columnE">
+            <h2>P1</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzP1" value="<?php echo $result2['fuzP1'] ?>">
+                <p></p>
+            </div>
+
+            <div class = "columnF">
+            <h2>P2</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzP2" value="<?php echo $result2['fuzP2'] ?>">
+                <p></p>
+            </div>
+
+            <div class = "columnG">
+            <h2>P3</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="fuzP3" value="<?php echo $result2['fuzP3'] ?>">
+                <p></p>
+            </div>
 
 
-	  DEfuzzy N3:
-	  <input type="text" name="defuzN3" value="<?php echo $result2['defuzN3'] ?>">
 
-	  DEfuzzy N2:
-	  <input type="text" name="defuzN2" value="<?php echo $result2['defuzN2'] ?>">
+          <h1>Defuzzification</h1>
 
-	  DEfuzzy N1:
-	  <input type="text" name="defuzN1" value="<?php echo $result2['defuzN1'] ?>">
+            <div class = "columnA">
+            <h2>N3</h2>
+	            <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzN3" value="<?php echo $result2['defuzN3'] ?>">
+                <p></p>
+            </div>
 
-	  DEfuzzy Z:
-	  <input type="text" name="defuzZ" value="<?php echo $result2['defuzZ'] ?>">
-      <br>
-	  DEfuzzy P1:
-	  <input type="text" name="defuzP1" value="<?php echo $result2['defuzP1'] ?>">
+            <div class = "columnB">
+            <h2>N2</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzN2" value="<?php echo $result2['defuzN2'] ?>">
+                <p></p>
+            </div>
 
-	  DEfuzzy P2:
-	  <input type="text" name="defuzP2" value="<?php echo $result2['defuzP2'] ?>">
+            <div class = "columnC">
+            <h2>N1</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzN1" value="<?php echo $result2['defuzN1'] ?>">
+                <p></p>
+            </div>
 
-	  DEfuzzy P3:
-	  <input type="text" name="defuzP3" value="<?php echo $result2['defuzP3'] ?>">
-	  <br><br>
+            <div class = "columnD">
+            <h2>Z</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzZ" value="<?php echo $result2['defuzZ'] ?>">
+                <p></p>
+            </div>
 
-	  Velocidade Desejada (p/s):
-	  <input type="number" min="-1000" max="1000" step="1" value="<?php echo $result['ajuste'] ?>" name="ajuste"
-	         for="power" oninput="power.value=ajuste.value" >
-	  <br>
+            <div class = "columnE">
+            <h2>P1</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzP1" value="<?php echo $result2['defuzP1'] ?>">
+                <p></p>
+            </div>
 
-	  <input type="range" min="-1000" max="1000"  step="1" value="<?php echo $result['ajuste'] ?>" name="power" list="powers"
-	         style="height:15%; width:95%; float:center;"
-	         for="ajuste" oninput="ajuste.value=power.value" >
+            <div class = "columnF">
+            <h2>P2</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzP2" value="<?php echo $result2['defuzP2'] ?>">
+                <p></p>
+            </div>
 
-	  <datalist id="powers">
-	    <option value="-1000">
-	    <option value="-750">
-	    <option value="-500">
-	    <option value="-250">
-	    <option value="0">
-	    <option value="250">
-	    <option value="500">
-	    <option value="750">
-	    <option value="1000">
-	  </datalist>
-	  <br>
+            <div class = "columnG">
+            <h2>P3</h2>
+                <input type="number" min="-1000" max="1000" step="0.0001" style="height:16.6%; width:100%; font-size:1em;"
+	                   name="defuzP3" value="<?php echo $result2['defuzP3'] ?>">
+                <p></p>
+            </div>
 
-	  <input type="submit" style="height:100px; width:250px;" value="Atualizar">
+
+	    <input type="range" min="-400" max="400"  step="10" value="<?php echo $result['ajuste'] ?>" name="power" list="powers"
+	               style="height:25%; width:100%; float:center;"
+	              for="ajuste" oninput="ajuste.value=power.value" >
+
+		<datalist id="powers">
+		  <option value="-400" label="-400">
+		  <option value="-350">
+		  <option value="-300">
+		  <option value="-250">
+		  <option value="-200" label="-200">
+		  <option value="-150">
+		  <option value="-100">
+		  <option value="-50">
+		  <option value="0" label="0">
+		  <option value="50">
+		  <option value="100">
+		  <option value="150">
+		  <option value="200" label="200">
+		  <option value="250">
+		  <option value="300">
+		  <option value="350">
+		  <option value="400" label="400">
+		</datalist>
+
+
+            <input type="number" min="-400" max="400" step="10" value="<?php echo $result['ajuste'] ?>" name="ajuste"
+	        for="power" oninput="power.value=ajuste.value" style="width:98%; font-size:1em; text-align:right;" >
+
+            <input type="submit" style="width:100%; font-size:1em;" value="Update">
 	</form>
 
-	<form action="graph.html" method="post">
-	<input type="submit" style="height:100px; width:250px;" value="Gráfico">
-	</form>
+	<div class = "colA">
+	   <form action="Aumenta.php" method="post">
+	   <input type="submit" style="height:100%; width:100%; font-size:1em;" value="+100">
+	  </form>
+	</div>
 
-	<form action="index.html" method="post">
-	<input type="submit" style="height:100px; width:250px;" value="Voltar">
-    </form>
-	<form action="Aumenta.php" method="post">
-	<input type="submit" style="height:100px; width:250px;" value="Aumentar (+)">
-	</form>
-	<form action="Diminui.php" method="post">
-	<input type="submit" style="height:100px; width:250px;" value="Diminuir (-)">
-	</form>
-	</form>
-	<form action="Zero.php" method="post">
-	<input type="submit" style="height:100px; width:250px;" value="Zero (0)">
-	</form>
+	<div class = "colB">
+	  <form action="Zero.php" method="post">
+	  <input type="submit" style="height:100%; width:100%; font-size:1em;" value="Zero">
+	  </form>
+	</div>
+
+	<div class = "colC">
+	  <form action="Diminui.php" method="post">
+	  <input type="submit" style="height:100%; width:100%; font-size:1em;" value="-100">
+	  </form>
+	</div>
+
+	<div class = "clA">
+	  <form action="graphhtml.php" method="post">
+	  <input type="submit" style="height:100%; width:100%; font-size:1em;" value="Graph">
+	  </form>
+	</div>
+
+	<div class = "clB">
+	  <form action="index.html" method="post">
+	  <input type="submit" style="height:100%; width:100%; font-size:1em;" value="Return">
+	  </form>
+	</div>
+
     </table>
     </head>
     <body>

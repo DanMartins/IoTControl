@@ -1,18 +1,25 @@
+<!-- %################################################################
+######################################################
+## {IoTControl - NetControl - Interface}            ##
+######################################################
+## { DanMartins/IoTControl is licensed under the    ##
+##   GNU General Public License v3.0}               ##
+######################################################
+## Author: {DanMartins}                             ##
+## Copyright: Copyright {2021}, {IoTControl}        ##
+## Credits: [{https://domartins.wixsite.com/data}]  ##
+## License: {GNU General Public License v3.0}       ##
+## Version: {2021}.{04}.{22}                        ##
+## Maintainer: {github.com/DanMartins/IoTControl}   ##
+## Email: {github.com/DanMartins}                   ##
+## Status: {Development}                            ##
 /*%################################################################
-/*% NetControl - IoTControl
-/*%
-/*%       Network - Interface.
-/*%       DanMartins
-/*%       IoTControl reasearch project
-/*%       São Paulo, 2017.
-/*%
-/*%################################################################
-*/
+-->
 <?php
 
    print("<html>\n");
    print("<head>\n");
-   print("\t<title>IoTControl Configura Sistema</title>\n");
+   print("\t<title>IoTControl</title>\n");
    print("</head>\n");
    print("<body>\n");
 
@@ -25,8 +32,6 @@
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
-
-   print("\t<h4>IoTControl - Comando em processamento</h4>\n");
 
    Atualiza();
    // if(isset($_REQUEST['Atualizar']))
@@ -70,7 +75,7 @@
 	      H_Erro("$_POST[pulsosvelcalc]");
       }
 
-      if (!filter_var($_POST['tempovelcalc'], FILTER_VALIDATE_FLOAT) === false)
+      if (filter_var($_POST['tempovelcalc'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['tempovelcalc'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $tempovelcalc=$_POST['tempovelcalc'];
 	  } else
@@ -78,7 +83,7 @@
 	      H_Erro("$_POST[tempovelcalc]");
       }
 
-      if (!filter_var($_POST['tempociclo'], FILTER_VALIDATE_FLOAT) === false)
+      if (filter_var($_POST['tempociclo'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['tempociclo'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $tempociclo=$_POST['tempociclo'];
 	  } else
@@ -94,7 +99,7 @@
 	      H_Erro("$_POST[grafpts]");
       }
 
-      if (!filter_var($_POST['intvelfil'], FILTER_VALIDATE_INT) === false)
+      if (filter_var($_POST['intvelfil'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['intvelfil'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $intvelfil=$_POST['intvelfil'];
 	  } else
@@ -102,7 +107,7 @@
 	      H_Erro("$_POST[intvelfil]");
       }
 
-      if (!filter_var($_POST['pwmfreq'], FILTER_VALIDATE_FLOAT) === false)
+      if (filter_var($_POST['pwmfreq'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['pwmfreq'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $pwmfreq=$_POST['pwmfreq'];
 	  } else
@@ -110,7 +115,7 @@
 	      H_Erro("$_POST[pwmfreq]");
       }
 
-      if (!filter_var($_POST['motorzm'], FILTER_VALIDATE_FLOAT) === false)
+      if (filter_var($_POST['motorzm'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['motorzm'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $motorzm=$_POST['motorzm'];
 	  } else
@@ -118,7 +123,7 @@
 	      H_Erro("$_POST[motorzm]");
       }
 
-      if (!filter_var($_POST['pwmzm'], FILTER_VALIDATE_FLOAT) === false)
+      if (filter_var($_POST['pwmzm'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['pwmzm'], FILTER_VALIDATE_FLOAT) === false)
       {
 	      $pwmzm=$_POST['pwmzm'];
 	  } else
@@ -230,20 +235,20 @@
      if (!odbc_commit($ses))
          H_Erro("odbc_commit()");
 
-     print("pulsosvelcalc: [$pulsosvelcalc] <br>\n");
-     print("tempovelcalc: [$tempovelcalc] <br>\n");
-     print("tempociclo: [$tempociclo] <br>\n");
-     print("grafpts: [$grafpts] <br>\n");
-     print("intvelfil: [$intvelfil] <br>\n");
-     print("pwmfreq: [$pwmfreq] <br>\n");
-     print("motorzm: [$motorzm] <br>\n");
-     print("pwmzm: [$pwmzm] <br>\n");
-     print("fatora: [$fatora] <br>\n");
-     print("fatorb: [$fatorb] <br>\n");
-     print("fatorc: [$fatorc] <br>\n");
+     //print("pulsosvelcalc: [$pulsosvelcalc] <br>\n");
+     //print("tempovelcalc: [$tempovelcalc] <br>\n");
+     //print("tempociclo: [$tempociclo] <br>\n");
+     //print("grafpts: [$grafpts] <br>\n");
+     //print("intvelfil: [$intvelfil] <br>\n");
+     //print("pwmfreq: [$pwmfreq] <br>\n");
+     //print("motorzm: [$motorzm] <br>\n");
+     //print("pwmzm: [$pwmzm] <br>\n");
+     //print("fatora: [$fatora] <br>\n");
+     //print("fatorb: [$fatorb] <br>\n");
+     //print("fatorc: [$fatorc] <br>\n");
 
 
-     print("*** Processamento executado com sucesso *** <br>\n");
+     //print("*** Processamento executado com sucesso *** <br>\n");
      //Done ($ses);
 
    }

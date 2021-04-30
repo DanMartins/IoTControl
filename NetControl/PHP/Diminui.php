@@ -1,13 +1,20 @@
+<!-- %################################################################
+######################################################
+## {IoTControl - NetControl - Interface}            ##
+######################################################
+## { DanMartins/IoTControl is licensed under the    ##
+##   GNU General Public License v3.0}               ##
+######################################################
+## Author: {DanMartins}                             ##
+## Copyright: Copyright {2021}, {IoTControl}        ##
+## Credits: [{https://domartins.wixsite.com/data}]  ##
+## License: {GNU General Public License v3.0}       ##
+## Version: {2021}.{04}.{22}                        ##
+## Maintainer: {github.com/DanMartins/IoTControl}   ##
+## Email: {github.com/DanMartins}                   ##
+## Status: {Development}                            ##
 /*%################################################################
-/*% NetControl - IoTControl
-/*%
-/*%       Network - Interface.
-/*%       DanMartins
-/*%       IoTControl reasearch project
-/*%       São Paulo, 2017.
-/*%
-/*%################################################################
-*/
+-->
 <?php
 
    error_reporting(E_ERROR | E_PARSE);
@@ -45,7 +52,7 @@
 
       odbc_fetch_row($qry);
       $array = odbc_result($qry, "ajuste");
-      $array= strval (intval($array) - 10);
+      $array= strval (intval($array) - 100);
 
 
       $query = "UPDATE controle
@@ -100,6 +107,7 @@
 
 <html>
     <head>
+    <title>IoTControl</title>
     </head>
     <body>
     <?php

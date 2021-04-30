@@ -35,6 +35,11 @@
 
    Atualiza();
 
+   //if(isset($_POST['Atualizar']))
+   //{
+   // Atualiza();
+   //}
+
    //
    // Initialize()
    //
@@ -70,13 +75,6 @@
 	      H_Erro("Velocidade Desejada $_POST[ajuste]");
       }
 
-      if (filter_var($_POST['valork'], FILTER_VALIDATE_FLOAT) === 0.0 || !filter_var($_POST['valork'], FILTER_VALIDATE_FLOAT) === false)
-      {
-	      $valork=$_POST['valork'];
-	  } else
-	  {
-	      H_Erro("Fator K $_POST[valork]");
-      }
 
 
      $ses = Initialize();
@@ -88,18 +86,13 @@
      if (!$qry)
          H_Erro("odbc_exec()");
 
-     $query = "UPDATE controle
-            SET valork = '$valork'";
-     $qry = odbc_exec($ses, $query);
-
-     if (!$qry)
-         H_Erro("odbc_exec()");
-
      if (!odbc_commit($ses))
          H_Erro("odbc_commit()");
 
      //print("ajuste: [$ajuste] <br>\n");
      //print("valork: [$valork] <br>\n");
+     //print("valorki: [$valorki] <br>\n");
+     //print("valorkd: [$valorkd] <br>\n");
      //print("*** Processamento concluído com sucesso *** <br>\n");
      //Done ($ses);
 

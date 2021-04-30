@@ -1,18 +1,25 @@
+<!-- %################################################################
+######################################################
+## {IoTControl - NetControl - Interface}            ##
+######################################################
+## { DanMartins/IoTControl is licensed under the    ##
+##   GNU General Public License v3.0}               ##
+######################################################
+## Author: {DanMartins}                             ##
+## Copyright: Copyright {2021}, {IoTControl}        ##
+## Credits: [{https://domartins.wixsite.com/data}]  ##
+## License: {GNU General Public License v3.0}       ##
+## Version: {2021}.{04}.{22}                        ##
+## Maintainer: {github.com/DanMartins/IoTControl}   ##
+## Email: {github.com/DanMartins}                   ##
+## Status: {Development}                            ##
 /*%################################################################
-/*% NetControl - IoTControl
-/*%
-/*%       Network - Interface.
-/*%       DanMartins
-/*%       IoTControl reasearch project
-/*%       São Paulo, 2017.
-/*%
-/*%################################################################
-*/
+-->
 <?php
 
    print("<html>\n");
    print("<head>\n");
-   print("\t<title>IoTControl Configuração de Controle</title>\n");
+   print("\t<title>IoTControl</title>\n");
    print("</head>\n");
    print("<body>\n");
 
@@ -25,8 +32,6 @@
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
-
-   print("\t<h4>IoTControl - Comando em processamento</h4>\n");
 
    Atualiza();
 
@@ -129,11 +134,11 @@
      if (!odbc_commit($ses))
          H_Erro("odbc_commit()");
 
-     print("ajuste: [$ajuste] <br>\n");
-     print("valork: [$valork] <br>\n");
-     print("valorki: [$valorki] <br>\n");
-     print("valorkd: [$valorkd] <br>\n");
-     print("*** Processamento concluído com sucesso *** <br>\n");
+     //print("ajuste: [$ajuste] <br>\n");
+     //print("valork: [$valork] <br>\n");
+     //print("valorki: [$valorki] <br>\n");
+     //print("valorkd: [$valorkd] <br>\n");
+     //print("*** Processamento concluído com sucesso *** <br>\n");
      //Done ($ses);
 
    }
