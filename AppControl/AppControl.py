@@ -30,7 +30,7 @@ class CAMPO:
 		self.calc_ant=0.0
 	        #filter coefficients
 	        self.N = 20.0         
-	        # Windup
+	        # Windup 
 	        self.windup = 100.0
 	        self.deadband_in = 0.0
 	        self.deadband_out = 0.0
