@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--# Rows dumped from record grid for table "admin"."fuzzy"-->
+<fuzzy>
+    <ROW_1>
+        <fuzN3>-200,000</fuzN3>
+        <fuzN2>-50,000</fuzN2>
+        <fuzN1>-10,000</fuzN1>
+        <fuzZ>0,000</fuzZ>
+        <fuzP1>10,000</fuzP1>
+        <fuzP2>50,000</fuzP2>
+        <fuzP3>200,000</fuzP3>
+        <defuzN3>-0,400</defuzN3>
+        <defuzN2>-0,250</defuzN2>
+        <defuzN1>-0,100</defuzN1>
+        <defuzZ>0,000</defuzZ>
+        <defuzP1>0,100</defuzP1>
+        <defuzP2>0,250</defuzP2>
+        <defuzP3>0,400</defuzP3>
+    </ROW_1>
+</fuzzy>
