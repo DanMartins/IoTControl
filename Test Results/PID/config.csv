@@ -1,0 +1,6 @@
+# Rows dumped from record grid for table "admin"."configura"
+
+"pulsosvelcalc",  "tempovelcalc",  "tempociclo",  "grafpts",  "intvelfil",  "pwmfreq",  "motorzm",  "pwmzm"
+"368,00", "0,100", "0,100", "125", "1,000", "1.000,000", "20,000", "10,000"
+
+
