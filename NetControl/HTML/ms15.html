@@ -16,10 +16,9 @@
 /*%################################################################
 -->
 <html>
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- <h3>Applied Control Laboratory (LCA) located in the Department of Telecommunications and Control Engineering (PTC) </h3>
+<!-- <h3>Applied Control Laboratory (LAC) located in the Department of Telecommunications and Control Engineering (PTC) </h3>
 <!-- <h3>at Polytechnic School – University of São Paulo</h3>
 <!-- <h3>Doutorando: Danilo Oliveira Martins</h3>
 -->
@@ -30,29 +29,28 @@ img {
 </style>
 <title>IoTControl</title>
 <table>
-<form action="plant.html" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Control">
-</form>
-<!--
-<form action="Aumenta.php" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Acelerar">
+<form action="openloop.php" method="post">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="Open Loop">
 </form>
 
-<form action="Diminui.php" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Freiar">
-</form>
-//-->
-
-<form action="configura.php" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Config">
+<form action="iot_pi_pos.php" method="post">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="PI Position Control">
 </form>
 
-<form action="ggraph.php" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Graph">
+<form action="iot_av.php" method="post">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="Phase Lead Position Control">
+</form>
+
+<form action="iot_casc.php" method="post">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="Cascade Position Control">
 </form>
 
 <form action="geraexe.php" method="post">
-<input type="submit" style="height:25%; width:100%; font-size:1.5em;" value="Abort">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="Abort">
+</form>
+
+<form action="index.html" method="post">
+<input type="submit" style="height:16.6%; width:100%; font-size:1.5em;" value="Init">
 </form>
 </table>
 <body>
