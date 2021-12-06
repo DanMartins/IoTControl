@@ -9,7 +9,7 @@
 ## Copyright: Copyright {2021}, {IoTControl}        ##
 ## Credits: [{https://domartins.wixsite.com/data}]  ##
 ## License: {GNU General Public License v3.0}       ##
-## Version: {2021}.{04}.{22}                        ##
+## Version: {2021}.{11}.{24}                        ##
 ## Maintainer: {github.com/DanMartins/IoTControl}   ##
 ## Email: {github.com/DanMartins}                   ##
 ## Status: {Development}                            ##
@@ -29,14 +29,14 @@
 
    }
 
-   popen("/var/www/html/PID.sh", "r");
+   popen("/var/www/html/IoT_i2c_open.sh", "r");
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
 
    $ses = Initialize();
 
-   $query = "SELECT ajuste, valork, valorki, valorkd FROM controle";
+   $query = "SELECT ajuste FROM controle";
 
    $qry = odbc_exec($ses, $query);
 
@@ -44,7 +44,7 @@
 
 
    if (!$qry)
-    H_Erro("odbc_exec(SELECT TOP)");
+    H_Erro("odbc_exec(SELECT)");
 
    //Done($ses);
 
@@ -139,33 +139,12 @@
     }
     </style>
 
-        <h1>PID</h1>
+        <h1>Open Loop</h1>
         <!-- Content section of website layout -->
 
 	<table>
-	<form method="post" action="controleexe.php">
-
+	<form method="post" action="OL_exe.php">
             <div class = "columnA">
-                <h2>Kp</h2>
-	            <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
-	                   name="valork" value="<?php echo $result['valork'] ?>">
-                <p></p>
-            </div>
-
-            <div class = "columnB">
-                <h2>Ki</h2>
-                <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
-	                   name="valorki" value="<?php echo $result['valorki'] ?>">
-                <p></p>
-            </div>
-
-            <div class = "columnC">
-                <h2>Kd</h2>
-                <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
-	                   name="valorkd" value="<?php echo $result['valorkd'] ?>">
-                <p></p>
-            </div>
-            <div class = "columnD">
                 <h2>Control</h2>
                 <input type="number" min="-400" max="400" step="10" value="<?php echo $result['ajuste'] ?>" name="ajuste"
 	                   for="power" oninput="power.value=ajuste.value" style="width: 98%; font-size:1em; text-align:right;" >

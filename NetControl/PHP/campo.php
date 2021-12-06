@@ -29,14 +29,14 @@
 
    }
 
-   popen("/var/www/html/PID.sh", "r");
+   popen("/var/www/html/CAMPO.sh", "r");
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
 
    $ses = Initialize();
 
-   $query = "SELECT ajuste, valork, valorki, valorkd FROM controle";
+   $query = "SELECT ajuste, valork, valorki FROM controle";
 
    $qry = odbc_exec($ses, $query);
 
@@ -139,11 +139,11 @@
     }
     </style>
 
-        <h1>PID</h1>
+        <h1>CAMPO</h1>
         <!-- Content section of website layout -->
 
 	<table>
-	<form method="post" action="controleexe.php">
+	<form method="post" action="piexe.php">
 
             <div class = "columnA">
                 <h2>Kp</h2>
@@ -159,12 +159,7 @@
                 <p></p>
             </div>
 
-            <div class = "columnC">
-                <h2>Kd</h2>
-                <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
-	                   name="valorkd" value="<?php echo $result['valorkd'] ?>">
-                <p></p>
-            </div>
+
             <div class = "columnD">
                 <h2>Control</h2>
                 <input type="number" min="-400" max="400" step="10" value="<?php echo $result['ajuste'] ?>" name="ajuste"

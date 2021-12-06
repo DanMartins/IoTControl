@@ -1,20 +1,3 @@
-<!-- %################################################################
-######################################################
-## {IoTControl - NetControl - Interface}            ##
-######################################################
-## { DanMartins/IoTControl is licensed under the    ##
-##   GNU General Public License v3.0}               ##
-######################################################
-## Author: {DanMartins}                             ##
-## Copyright: Copyright {2021}, {IoTControl}        ##
-## Credits: [{https://domartins.wixsite.com/data}]  ##
-## License: {GNU General Public License v3.0}       ##
-## Version: {2021}.{04}.{22}                        ##
-## Maintainer: {github.com/DanMartins/IoTControl}   ##
-## Email: {github.com/DanMartins}                   ##
-## Status: {Development}                            ##
-/*%################################################################
--->
 <?php
    print("<!DOCTYPE html>\n");
    print("<html>\n");
@@ -29,7 +12,7 @@
 
    }
 
-   popen("/var/www/html/PID.sh", "r");
+   popen("/var/www/html/IoT_AV_i2c.sh", "r");
 
    // No warnings but errors ON
    error_reporting(E_ERROR | E_PARSE);
@@ -139,34 +122,34 @@
     }
     </style>
 
-        <h1>PID</h1>
+        <h1>Phase Lead Position Control</h1>
         <!-- Content section of website layout -->
 
 	<table>
 	<form method="post" action="controleexe.php">
 
             <div class = "columnA">
-                <h2>Kp</h2>
+                <h2>Kc</h2>
 	            <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
 	                   name="valork" value="<?php echo $result['valork'] ?>">
                 <p></p>
             </div>
 
             <div class = "columnB">
-                <h2>Ki</h2>
+                <h2>a</h2>
                 <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
 	                   name="valorki" value="<?php echo $result['valorki'] ?>">
                 <p></p>
             </div>
 
             <div class = "columnC">
-                <h2>Kd</h2>
+                <h2>b</h2>
                 <input type="number" min="-100" max="100" step="0.0001" style="width: 98%; font-size:1em;"
 	                   name="valorkd" value="<?php echo $result['valorkd'] ?>">
                 <p></p>
             </div>
             <div class = "columnD">
-                <h2>Control</h2>
+                <h2>Setpoint</h2>
                 <input type="number" min="-400" max="400" step="10" value="<?php echo $result['ajuste'] ?>" name="ajuste"
 	                   for="power" oninput="power.value=ajuste.value" style="width: 98%; font-size:1em; text-align:right;" >
                 <p></p>

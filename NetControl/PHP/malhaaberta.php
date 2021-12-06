@@ -207,7 +207,7 @@
 	</div>
 
 	<div class = "clA">
-      <form action="graphhtml.php" method="post">
+      <form action="ggraph.php" method="post">
       <input type="submit" style="height:100%; width:100%; font-size:1em;" value="Graph">
       </form>
 	</div>
