@@ -6,10 +6,10 @@
 ##   GNU General Public License v3.0}               ##
 ######################################################
 ## Author: {DanMartins}                             ##
-## Copyright: Copyright {2021}, {IoTControl}        ##
+## Copyright: Copyright {2022}, {IoTControl}        ##
 ## Credits: [{https://domartins.wixsite.com/data}]  ##
 ## License: {GNU General Public License v3.0}       ##
-## Version: {2021}.{11}.{08}                        ##
+## Version: {2022}.{06}.{04}                        ##
 ## Maintainer: {github.com/DanMartins/IoTControl}   ##
 ## Email: {github.com/DanMartins}                   ##
 ## Status: {Development}                            ##
@@ -26,11 +26,9 @@
    error_reporting(E_ERROR | E_PARSE);
 
    //arrays
-   $datarray = array();
-   $ajustevel = array();
-   $pwmout = array();
-   $kfeedback = array();
-   $table = array();
+   $table1 = array();
+   $table2 = array();
+   $table_join = array();
    //vars
    $tcount = 0;
    $offset = 0;
@@ -42,15 +40,6 @@
      goto end;
 
    // First SQL query
-   $query = "SELECT ajuste FROM controle";
-   $qry = odbc_exec($ses, $query);
-
-   $result = odbc_fetch_array($qry);
-
-   if (!$qry)
-    H_Erro("odbc_exec(SELECT TOP)");
-
-   // Second SQL query
    $qry = odbc_exec($ses, "SELECT grafpts FROM configura");
 
    $info = odbc_fetch_array($qry);
@@ -59,41 +48,39 @@
    if (!$qry)
     Handle_Error("odbc_exec(SELECT)");
 
-   // Third SQL query
-   $query = "WITH BottomX (velocidade, tempo, ajuste, erro, kmotor) AS (SELECT TOP " . strval($samples);
-   $query = $query . "  velocidade, tempo, ajuste, erro, kmotor FROM dados ORDER BY tempo DESC) SELECT * FROM BottomX ORDER BY tempo ASC";
+   // Second SQL query
+   $query = "WITH BottomX (ajuste_1, ajuste_2, feedback_1, feedback_2, out_1, out_2, tempo) AS (SELECT TOP " . strval($samples);
+   $query = $query . "  ajuste_1, ajuste_2, feedback_1, feedback_2, out_1, out_2, tempo FROM dados_mimo ORDER BY tempo DESC) SELECT * FROM BottomX ORDER BY tempo ASC";
 
    // ODBC exec
    $qry = odbc_exec($ses, $query);
 
    // ODBC fetch
    $info = odbc_fetch_array($qry);
-   $veloc = $info["velocidade"];
-   $tem = floatval(substr($info["tempo"], -6, -1)) + 60*floatval(substr($info["tempo"], -9, -8)) + 3600*floatval(substr($info["tempo"], -12, -11));//substr($info["tempo"], 16, -1);
-   $datarray[$tem]= $veloc;
-   $ajustevel[$tem] = $info["ajuste"];
-   $pwmout[$tem] = $info["erro"];
-   $kfeedback[$tem] = $info["kmotor"];
 
-   $table[$tcount] = array("T","IN","VM","VT","VP");
+   // Read Data third query
+   $tempo = floatval(substr($info["tempo"], -6, -1)) + 60*floatval(substr($info["tempo"], -9, -8)) + 3600*floatval(substr($info["tempo"], -12, -11));//str_replace(":","", substr($info["tempo"], 15, -1));
+
+   $table1[$tcount] = array("T","SET_1","CTRL_1","YAW","PITCH");
+   $table2[$tcount] = array("T","SET_2","CTRL_2","YAW","PITCH");
+   $table_join[$tcount] = array("T","SET_1","CTRL_1","YAW","SET_2","CTRL_2","PITCH");
+
    $tcount=$tcount+1;
-   $table[$tcount] = array($tem, floatval($info["ajuste"]), floatval($info["erro"]), floatval($info["velocidade"]), floatval($info["kmotor"]));
+   $table1[$tcount] = array($tempo, floatval($info["ajuste_1"]), floatval($info["out_1"]), floatval($info["feedback_1"]), floatval($info["feedback_2"]));
+   $table2[$tcount] = array($tempo, floatval($info["ajuste_2"]), floatval($info["out_2"]), floatval($info["feedback_1"]), floatval($info["feedback_2"]));
+   $table_join[$tcount] = array($tempo, floatval($info["ajuste_1"]), floatval($info["out_1"]), floatval($info["feedback_1"]), floatval($info["ajuste_2"]), floatval($info["out_2"]), floatval($info["feedback_2"]));
 
    while ($info = odbc_fetch_array($qry)){
-       $veloc = $info["velocidade"];
-       $tem = floatval(substr($info["tempo"], -6, -1)) + 60*floatval(substr($info["tempo"], -9, -8)) + 3600*floatval(substr($info["tempo"], -12, -11));//substr($info["tempo"], 16, -1);
-       $datarray[$tem]= $veloc;
-       $ajustevel[$tem] = $info["ajuste"];
-       $pwmout[$tem] = $info["erro"];
-       $kfeedback[$tem] = $info["kmotor"];
-
+       $tempo = floatval(substr($info["tempo"], -6, -1)) + 60*floatval(substr($info["tempo"], -9, -8)) + 3600*floatval(substr($info["tempo"], -12, -11));//str_replace(":","", substr($info["tempo"], 15, -1));
        $tcount=$tcount+1;
-       $table[$tcount] = array($tem, floatval($info["ajuste"]), floatval($info["erro"]), floatval($info["velocidade"]), floatval($info["kmotor"]));
+       $table1[$tcount] = array($tempo, floatval($info["ajuste_1"]), floatval($info["out_1"]), floatval($info["feedback_1"]), floatval($info["feedback_2"]));
+       $table2[$tcount] = array($tempo, floatval($info["ajuste_2"]), floatval($info["out_2"]), floatval($info["feedback_1"]), floatval($info["feedback_2"]));
+       $table_join[$tcount] = array($tempo, floatval($info["ajuste_1"]), floatval($info["out_1"]), floatval($info["feedback_1"]), floatval($info["ajuste_2"]), floatval($info["out_2"]), floatval($info["feedback_2"]));
    }
 
    // interface vars - server/client: PHP/JS
    $pts = intval($pontos);
-   $offset = (count($table)-$pts);
+   $offset = (count($table1)-$pts);
 
    if (!$qry)
     Handle_Error("odbc_exec(SELECT TOP)");
@@ -165,7 +152,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <h3>Applied Control Laboratory (LCA) located in the Department of Telecommunications and Control Engineering (PTC) </h3>
-<!-- <h3>at Polytechnic School – University of São Paulo</h3>
+<!-- <h3>at Polytechnic School â€“ University of SÃ£o Paulo</h3>
 <!-- <h3>Doutorando: Danilo Oliveira Martins</h3>
 -->
 <style>
@@ -206,15 +193,20 @@
 <div class = "cA">
   <div id="dom-target" style="display: none;">
     <?php
-      $jsonTable = json_encode($table);
+      $jsonTable1 = json_encode($table1);
+      $jsonTable2 = json_encode($table2);
+      $jsonTable_join = json_encode($table_join);
       $output = $tcount; // Again, do some operation, get the output.
-      echo htmlspecialchars($jsonTable); /* You have to escape because the result
+      echo htmlspecialchars($jsonTable1); /* You have to escape because the result
                                            will not be valid HTML otherwise. */
+      echo htmlspecialchars($jsonTable2);
+      echo htmlspecialchars($jsonTable_join);
     ?>
   </div>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <div id="chart_div" style="width:100%; height:100%"></div>
+  <div id="chart_div1" style="width:100%; height:50%"></div>
+  <div id="chart_div2" style="width:100%; height:50%"></div>
 </div>
 <br>
 
@@ -311,22 +303,100 @@ var options = {
       }
     }
 };
-var offset_data = <?=$offset?>;
 
+var options1 = {
+    'title':'Channel 1 - Yaw',
+    //'width':900,//'width':1350,
+    //'width_units':'%',
+    //'height':900,//'height':550,
+    //'height_units':'%',
+    hAxis: {
+      title: 'Time',
+      format: 'short',
+
+      gridlines : {count : 12}
+    },
+    vAxis: {
+      title: 'rad/100, (%)',
+      //viewWindow:{
+      //  max:8,
+      //  min:-8
+      //},
+      gridlines : {count : 12}
+    },
+    colors: ['black', 'green','red','blue'],//"IN","OUT","YAW","PITCH"
+    series: {
+      1: {
+        curveType: 'none'
+      }
+    }//,
+    // Allow multiple
+    // simultaneous selections.
+    //selectionMode: 'multiple',
+    // Trigger tooltips
+    // on selections.
+    //tooltip: {trigger: 'selection'},
+    // Group selections
+    // by x-value.
+    //aggregationTarget: 'category',
+    //animation:{
+    //    duration: 1000,
+    //    easing: 'out',
+    //    "startup": true
+    //  }
+};
+
+var options2 = {
+    'title':'Channel 2 - Pitch',
+    //'width':900,//'width':1350,
+    //'width_units':'%',
+    //'height':900,//'height':550,
+    //'height_units':'%',
+    hAxis: {
+      title: 'Time',
+      gridlines : {count : 12}
+    },
+    vAxis: {
+      title: 'rad/100, (%)',
+      //viewWindow:{
+      //  max:8,
+      //  min:-8
+      //},
+      gridlines : {count : 12}
+    },
+    colors: ['gray', 'olive','red','blue'],//"IN","OUT","YAW","PITCH"
+    series: {
+      1: {
+        curveType: 'none'
+      }
+    }
+};
+
+
+
+var offset_data = <?=$offset?>;
 var offset = <?=$offset?>;
 var pontos = <?=$pts?>;
-let table = <?=$jsonTable?>;
-let tableview = new Array(pontos);
+let table1 = <?=$jsonTable1?>;
+let tableview1 = new Array(pontos);
+let table2 = <?=$jsonTable2?>;
+let tableview2 = new Array(pontos);
 
 // JS functions
 function drawCurveTypes() {
-  tableview = table.slice(offset, (offset + pontos));//$tableview = array_slice($table, $offset, intval($pontos));
-  tableview[0] = table[0];
+  tableview1 = table1.slice(offset, (offset + pontos));
+  tableview1[0] = table1[0];
 
-  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-  var data = new google.visualization.arrayToDataTable(tableview, false);
-  chart.draw(data, options);
+  tableview2 = table2.slice(offset, (offset + pontos));
+  tableview2[0] = table2[0];
 
+  var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+  var data1 = new google.visualization.arrayToDataTable(tableview1, false);
+  chart1.draw(data1, options1);
+
+  var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
+  var data2 = new google.visualization.arrayToDataTable(tableview2, false);
+  chart2.draw(data2, options2);
 }
 
 function drawChartLine(x) {
@@ -377,11 +447,14 @@ function csvToArray(str, option, delimiter = ",") {
   let arr_var = new Array();
   var i = 0;
 
-  if (option == 1){//$table[$tcount] = array("T","IN","VM","VT","VP");
-    arr_var[i] = ["T","IN","VM","VT","VP"];
+  if (option == 1){
+    arr_var[i] = ["T","SET_1", "CTRL_1", "YAW", "PITCH"];
     i++;
   }
-
+  else if (option == 2){
+    arr_var[i] = ["T","SET_2", "CTRL_2", "YAW", "PITCH"];
+    i++;
+  }
 
   // Map the rows
   // split values from each row into an array
@@ -398,14 +471,26 @@ function csvToArray(str, option, delimiter = ",") {
 		object[header] = parseFloat(values[index]);
 	}
       }
+      else if (option == 2)
+      {
+	  if (header.includes("1")){}
+	  else{
+		object[header] = parseFloat(values[index]);
+		}
+      }
       else
       {
 	  object[header] = parseFloat(values[index]);
       }
       return object;
     }, {});
-    if (option == 1){//"T","IN","VM","VT","VP")
-       arr_var[i] = [el.T.valueOf(), el.IN.valueOf(), el.VM.valueOf(), el.VT.valueOf(), el.VP.valueOf()];
+    if (option == 1){
+      //arr_var[i] = [el.T.valueOf(), el.SET_1.valueOf(), el.CTRL_1.valueOf(), el.YAW.valueOf(), el.PITCH.valueOf()];
+      arr_var[i] = [el.T.valueOf(), el.IN1.valueOf(), el.OUT1.valueOf(), el.YAW.valueOf(), el.PITCH.valueOf()];
+    }
+    else if (option == 2){
+      //arr_var[i] = [el.T.valueOf(), el.SET_2.valueOf(), el.CTRL_2.valueOf(), el.YAW.valueOf(), el.PITCH.valueOf()];
+      arr_var[i] = [el.T.valueOf(), el.IN2.valueOf(), el.OUT2.valueOf(), el.YAW.valueOf(), el.PITCH.valueOf()];
     }
     i++;
     return el;
@@ -417,8 +502,9 @@ function csvToArray(str, option, delimiter = ",") {
 }
 
 function saveData2File() {
-  var str = JSON.stringify(<?=$jsonTable?>, null, 2);
+  var str = JSON.stringify(<?=$jsonTable_join?>, null, 2);
   var csv = this.convertToCSV(str);
+
   let csvContent = "data:text/csv;charset=utf-8,"
     + csv;
   var encodedUri = encodeURI(csvContent);
@@ -447,10 +533,14 @@ function saveFile2Data() {
 
         let data_array = new Array();
         data_array = csvToArray(content,1);
-        table = data_array; //$table[$tcount] = array("T","IN","VM","VT","VP"));
+        table1 = data_array; //$table1[$tcount] = array("T","SET_1","CTRL_1","YAW","PITCH");
 
-        offset_data = (table.length - pontos);
+	data_array = csvToArray(content,2);
+        table2 = data_array; //$table2[$tcount] = array("T","SET_2","CTRL_2","YAW","PITCH");
+
+        offset_data = (table1.length - pontos);
         offset = offset_data;
+        //$table_join[$tcount] = array("T","SET_1","CTRL_1","YAW","SET_2","CTRL_2","PITCH");
         //Update Graph
         drawCurveTypes();
      }
@@ -463,10 +553,16 @@ function saveFile2Data() {
 
 // to adapt chart to screen
 function resizeChart () {
-   var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-   var data = new google.visualization.arrayToDataTable(tableview, false);
-   chart.draw(data, options);
+   var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+   var data1 = new google.visualization.arrayToDataTable(tableview1, false);
+   chart1.draw(data1, options1);
+
+   var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
+   var data2 = new google.visualization.arrayToDataTable(tableview2, false);
+   chart2.draw(data2, options2);
 }
+
+
 function oPtions(value){
     if (value=="Log"){
       saveData2File()
@@ -475,6 +571,7 @@ function oPtions(value){
       saveFile2Data()
     }
 }
+
 if (document.addEventListener) {window.addEventListener('resize', resizeChart);}
 else if (document.attachEvent) {window.attachEvent('onresize', resizeChart);}
 else {window.resize = resizeChart;}
